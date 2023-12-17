@@ -1,22 +1,24 @@
-import Axios from 'axios'
-
-
+import { useEffect, useState } from 'react';
+import Axios from 'axios';
 
 function Catfact() {
-    fetch("https://catfact.ninja/fact")
-  .then((res) => res.json())
-  .then((data) => {
-    console.log(data);
-  });
+  const [catFact, setCatFact] = useState('');
 
-  Axios.get("https://catfact.ninja/fact").then((res) => {
-    console.log(res.data);
-  });
+  const fetchCatFact = () => {
+    Axios.get("https://catfact.ninja/fact").then((res) => {
+      setCatFact(res.data.fact);
+    });
+  };
+
+  useEffect(() => {
+    // Fetch cat fact when the component mounts
+    fetchCatFact();
+  }, []); // Empty dependency array to run the effect only once
 
   return (
     <>
-      <button>Generate Cat Fact</button>
-      <p></p>
+      <button onClick={fetchCatFact}>Generate Cat Fact</button>
+      <p>{catFact}</p>
     </>
   );
 }
